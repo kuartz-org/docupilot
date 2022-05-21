@@ -8,7 +8,9 @@ module Docupilot
 
     class << self
       def all
-        request ""
+        request("").map do |record_attributes|
+          new record_attributes
+        end
       end
 
       def find(id)
