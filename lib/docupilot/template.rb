@@ -35,12 +35,16 @@ module Docupilot
       end
 
       def find_schema(id)
-        request "#{id}/schema"
+        request("#{id}/schema")[:schema]
       end
     end
 
     def folder
       Folder.new(@folder)
+    end
+
+    def schema
+      self.class.find_schema(id)
     end
 
     private
