@@ -68,7 +68,11 @@ module Docupilot
     end
 
     def save
-      saved_attributes = persisted? ? self.class.update(id, attributes) : self.class.create(attributes)
+      persisted? ? update : create_record
+    end
+
+    def update
+      saved_attributes = self.class.update(id, attributes)
 
       saved_attributes.keys.each_with_object(self) do |attribute, record|
         record.public_send("#{attribute}=", saved_attributes[attribute])
@@ -76,7 +80,7 @@ module Docupilot
     end
 
     def created_time
-      Time.zone.parse(@created_time)
+      Time.zone.parse(@created_time) if @created_time
     end
 
     def created_time=(created_time)
@@ -92,6 +96,14 @@ module Docupilot
     def attributes
       self.class::ATTRIBUTES.each_with_object({}) do |attribute, attributes|
         attributes[attribute] = public_send(attribute) if public_send(attribute)
+      end
+    end
+
+    def create_record
+      saved_attributes = self.class.create(attributes)
+
+      saved_attributes.keys.each_with_object(self) do |attribute, record|
+        record.public_send("#{attribute}=", saved_attributes[attribute])
       end
     end
   end

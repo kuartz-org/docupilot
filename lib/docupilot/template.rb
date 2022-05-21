@@ -27,15 +27,6 @@ module Docupilot
       type
     ].freeze
 
-    PERMITTED_ATTRIBUTES = %i[
-      description
-      document_status
-      folder
-      output_file_name
-      title
-      type
-    ].freeze
-
     attr_accessor *ATTRIBUTES
 
     class << self
@@ -49,7 +40,15 @@ module Docupilot
     end
 
     def folder
-      @folder[:id].to_s
+      Folder.new(@folder)
+    end
+
+    private
+
+    def attributes
+      attrs = super
+      attrs[:folder] = folder.id.to_s
+      attrs
     end
   end
 end
