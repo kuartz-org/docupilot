@@ -3,31 +3,40 @@
 module Docupilot
   class Template < RemoteRecord
     ATTRIBUTES = %i[
-      title
-      description
-      folder
-      name
-      type
-      document_status
-      trashed
-      output_file_name
-      output_type
-      flatten_pdf
-      format
-      orientation
-      timezone
       auto_number
-      header
-      footer
-      password
-      margin
-      no_of_pages
-      width
-      height
       dynamic_images
+      flatten_pdf
+      footer
+      format
+      header
+      height
+      margin
+      name
+      no_of_pages
+      orientation
+      output_type
+      password
+      timezone
+      trashed
+      width
+      description
+      document_status
+      folder
+      output_file_name
+      title
+      type
     ].freeze
 
-    attr_reader *ATTRIBUTES
+    PERMITTED_ATTRIBUTES = %i[
+      description
+      document_status
+      folder
+      output_file_name
+      title
+      type
+    ].freeze
+
+    attr_accessor *ATTRIBUTES
 
     class << self
       def base_path
@@ -37,6 +46,10 @@ module Docupilot
       def find_schema(id)
         request "#{id}/schema"
       end
+    end
+
+    def folder
+      @folder[:id].to_s
     end
   end
 end

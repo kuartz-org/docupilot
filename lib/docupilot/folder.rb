@@ -2,7 +2,11 @@
 
 module Docupilot
   class Folder < RemoteRecord
-    attr_reader :name
+    ATTRIBUTES = %i[
+      name
+    ].freeze
+
+    attr_accessor *ATTRIBUTES
 
     class << self
       def base_path
