@@ -16,7 +16,7 @@ module Docupilot
       end
 
       def create(attributes)
-        new Request.new(self::BASE_PATH).post("", attributes)
+        new(attributes).save
       end
     end
 
