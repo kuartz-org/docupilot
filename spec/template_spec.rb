@@ -60,15 +60,38 @@ RSpec.describe Docupilot::Template do
     end
 
     context "With template collection" do
-      let(:template_one) { described_class.new(id: 1, title: "Base Lease template", created_time: Time.now.iso8601) }
-      let(:template_two) { described_class.new(id: 2, title: "CONDE Lease template", created_time: Time.now.iso8601) }
       let(:request) { Docupilot::Request.new(described_class::BASE_PATH) }
 
       it "return collection of templates" do
-        expect(described_class.all.class).to eq Array
-        expect(described_class.all.first.class).to eq described_class
-        expect(described_class.all.first.id).to eq 1
-        expect(described_class.all.first.title).to eq "Base Lease template"
+        templates = described_class.all
+
+        expect(templates.class).to eq Array
+        expect(templates.first.class).to eq described_class
+        expect(templates.first.id).to eq 1
+        expect(templates.first.title).to eq "Base Lease template"
+      end
+    end
+  end
+
+  describe ".find" do
+    before do
+      allow(Docupilot::Request).to receive(:new).with(described_class::BASE_PATH).
+      and_return(request)
+
+      allow(request).to receive(:get).with(1).and_return(
+        id: 1, title: "Base Lease template", created_time: Time.now.iso8601
+      )
+    end
+
+    context "With template collection" do
+      let(:request) { Docupilot::Request.new(described_class::BASE_PATH) }
+
+      it "return a template" do
+        template = described_class.find(1)
+
+        expect(template.class).to eq described_class
+        expect(template.id).to eq 1
+        expect(template.title).to eq "Base Lease template"
       end
     end
   end
