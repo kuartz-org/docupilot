@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
-require_relative "request"
-
 module Docupilot
   class RemoteRecord
     attr_accessor :id
 
     class << self
       def all
-        request("").map do |record_attributes|
+        Request.new(self::BASE_PATH).get("").map do |record_attributes|
           new record_attributes
         end
       end
 
       def find(id)
-        new Request.new(self.class::BASE_PATH).get(id)
+        new Request.new(self::BASE_PATH).get(id)
       end
 
       def create(attributes)
@@ -33,7 +31,7 @@ module Docupilot
     end
 
     def created_time
-      Time.zone.parse(@created_time) if @created_time
+      Time.parse(@created_time) if @created_time
     end
 
     def created_time=(created_time)

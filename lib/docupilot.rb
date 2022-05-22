@@ -16,6 +16,7 @@ module Docupilot
   end
 end
 
+require "docupilot/request"
 require "docupilot/remote_record"
 require "docupilot/template"
 require "docupilot/folder"
