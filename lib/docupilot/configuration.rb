@@ -28,10 +28,10 @@ module Docupilot
 
     DEFAULT = {
       end_point: "https://api.docupilot.app/api/v1"
-    }
+    }.freeze
 
     DEFAULT.each do |param, default_value|
-      self.send("#{param}=", default_value)
+      send("#{param}=", default_value)
     end
   end
 end

@@ -6,9 +6,11 @@ module Docupilot
       name
     ].freeze
 
-    attr_accessor *ATTRIBUTES
+    attr_accessor(*ATTRIBUTES)
 
     class << self
+      private
+
       def base_path
         :folders
       end

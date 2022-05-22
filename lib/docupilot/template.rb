@@ -27,15 +27,21 @@ module Docupilot
       type
     ].freeze
 
-    attr_accessor *ATTRIBUTES
+    attr_accessor(*ATTRIBUTES)
 
     class << self
-      def base_path
-        :templates
-      end
-
       def find_schema(id)
         request("#{id}/schema")[:schema]
+      end
+
+      def upload_content(id, file)
+        request("#{id}/content", :post, file: file)
+      end
+
+      private
+
+      def base_path
+        :templates
       end
     end
 
