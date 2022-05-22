@@ -140,3 +140,30 @@ template.merge_document(attributes)
 #   :file_name=>"Sample Project Proposal_2022-05-22 16_53_08.docx"
 # }
 ```
+
+### Folder
+
+#### Get list of folders
+
+[reference](https://help.docupilot.app/developers/folders-api#get-list-of-templates)
+
+```ruby
+Docupilot::Folder.all
+# => [#<Docupilot::Folder:0x0000...>, #<Docupilot::Folder:0x0000...>]
+```
+
+#### Create a new folder
+
+[reference](https://help.docupilot.app/developers/folders-api#create-a-new-folder)
+
+```ruby
+folder = Docupilot::Folder.new(name: "dev")
+
+folder.save
+# => #<Docupilot::Folder:0x0000..>
+
+# or
+
+Docupilot::Folder.create(name: "dev")
+# => #<Docupilot::Folder:0x0000..>
+```
