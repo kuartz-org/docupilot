@@ -14,7 +14,7 @@ RSpec.describe Docupilot::RemoteRecord do
   describe "#created_time" do
     it "returns a time object" do
       time = Time.now.iso8601
-      expect(described_class.new(created_time: time ).created_time).to eq Time.parse(time)
+      expect(described_class.new(created_time: time).created_time).to eq Time.parse(time)
     end
   end
 end

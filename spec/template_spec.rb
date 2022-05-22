@@ -8,12 +8,14 @@ RSpec.describe Docupilot::Template do
   describe ".all" do
     before do
       allow(Docupilot::Request).to receive(:new).with(described_class::BASE_PATH).
-      and_return(request)
+        and_return(request)
 
-      allow(request).to receive(:get).with("").and_return([
-        { id: 1, title: "Base Lease template", created_time: Time.now.iso8601 },
-        { id: 2, title: "CONDE Lease template", created_time: Time.now.iso8601 }
-      ])
+      allow(request).to receive(:get).with("").and_return(
+        [
+          { id: 1, title: "Base Lease template", created_time: Time.now.iso8601 },
+          { id: 2, title: "CONDE Lease template", created_time: Time.now.iso8601 }
+        ]
+      )
     end
 
     context "With template collection" do
@@ -33,7 +35,7 @@ RSpec.describe Docupilot::Template do
   describe ".find" do
     before do
       allow(Docupilot::Request).to receive(:new).with(described_class::BASE_PATH).
-      and_return(request)
+        and_return(request)
 
       allow(request).to receive(:get).with(1).and_return(
         id: 1, title: "Base Lease template", created_time: Time.now.iso8601
@@ -56,7 +58,7 @@ RSpec.describe Docupilot::Template do
   describe ".create" do
     before do
       allow(Docupilot::Request).to receive(:new).with(described_class::BASE_PATH).
-      and_return(request)
+        and_return(request)
 
       allow(request).to receive(:post).with("", { title: "Base Lease template" }).and_return(
         id: 1, title: "Base Lease template", created_time: Time.now.iso8601

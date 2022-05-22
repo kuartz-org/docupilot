@@ -3,7 +3,7 @@ AllCops:
   SuggestExtensions: false
   Exclude:
   - "bin/**/*"
-  - "spec/**/*"
+  # - "spec/**/*"
   - "vendor/**/*"
 
 Bundler/OrderedGems:
@@ -18,6 +18,8 @@ Layout/SpaceInLambdaLiteral:
 
 Metrics/AbcSize:
   CountRepeatedAttributes: false
+Metrics/BlockLength:
+  IgnoredMethods: ['describe', 'context']
 Metrics/ClassLength:
   CountAsOne: ['array', 'hash', 'heredoc']
 Metrics/MethodLength:
