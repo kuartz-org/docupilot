@@ -30,22 +30,16 @@ module Docupilot
 
     attr_accessor(*ATTRIBUTES)
 
-    class << self
-      def find_schema(id)
-        request("#{id}/schema")[:schema]
-      end
-
-      def upload_content(id, file)
-        request("#{id}/content", :post, file: file)
-      end
-    end
-
     def folder
       Folder.new(@folder) if @folder
     end
 
     def schema
-      self.class.find_schema(id)
+      Request.new(BASE_PATH).get("#{id}/schema")
+    end
+
+    def upload_content(file)
+      Request.new(BASE_PATH).post("#{id}/content", file: file)
     end
 
     private
