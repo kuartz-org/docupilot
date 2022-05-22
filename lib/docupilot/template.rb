@@ -35,7 +35,8 @@ module Docupilot
     end
 
     def schema
-      Request.new(BASE_PATH).get("#{id}/schema")
+      response = Request.new(BASE_PATH).get("#{id}/schema")
+      response[:schema]
     end
 
     def upload_content(file)
