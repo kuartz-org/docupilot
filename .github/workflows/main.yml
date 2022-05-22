@@ -23,10 +23,12 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
-    - name: Run the default task
-      run: bundle exec rake
+    - name: Run tests
+      run: bundle exec rspec
     - name: Simplecov Report
       uses: aki77/simplecov-report-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         failedThreshold: 80
+    - name: Rubocop
+      run: bundle exec rubocop --parallel
