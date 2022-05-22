@@ -83,11 +83,34 @@ RSpec.describe Docupilot::Template do
       )
     end
 
-    context "With template collection" do
+    context "With request" do
       let(:request) { Docupilot::Request.new(described_class::BASE_PATH) }
 
       it "return a template" do
         template = described_class.find(1)
+
+        expect(template.class).to eq described_class
+        expect(template.id).to eq 1
+        expect(template.title).to eq "Base Lease template"
+      end
+    end
+  end
+
+  describe ".create" do
+    before do
+      allow(Docupilot::Request).to receive(:new).with(described_class::BASE_PATH).
+      and_return(request)
+
+      allow(request).to receive(:post).with("", { title: "Base Lease template" }).and_return(
+        id: 1, title: "Base Lease template", created_time: Time.now.iso8601
+      )
+    end
+
+    context "With request" do
+      let(:request) { Docupilot::Request.new(described_class::BASE_PATH) }
+
+      it "return a template" do
+        template = described_class.create({ title: "Base Lease template" })
 
         expect(template.class).to eq described_class
         expect(template.id).to eq 1
