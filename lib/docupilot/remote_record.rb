@@ -14,22 +14,11 @@ module Docupilot
       end
 
       def find(id)
-        new Request.new(base_path).get(id)
+        new Request.new(self.class::BASE_PATH).get(id)
       end
 
       def create(attributes)
-        Request.new(base_path).post("", attributes)
-      end
-
-      def update(id, attributes)
-        Request.new(base_path).put(id, attributes)
-        attributes
-      end
-
-      private
-
-      def base_path
-        ""
+        new Request.new(self.class::BASE_PATH).post("", attributes)
       end
     end
 
@@ -40,7 +29,7 @@ module Docupilot
     end
 
     def save
-      persisted? ? update : create
+      new_record? ? create(all_attributes) : update(all_attributes)
     end
 
     def created_time
@@ -51,32 +40,36 @@ module Docupilot
       @created_time = created_time.is_a?(String) ? created_time : created_time&.iso8601
     end
 
-    def persisted?
-      !!id
+    def new_record?
+      !id
+    end
+
+    def update(attributes)
+      saved_attributes = Request.new(self.class::BASE_PATH).put(id, attributes)
+
+      saved_attributes.keys.each_with_object(self) do |attribute, record|
+        record.public_send("#{attribute}=", saved_attributes[attribute])
+      end
+
+      self
     end
 
     private
 
-    def attributes
+    def all_attributes
       self.class::ATTRIBUTES.each_with_object({}) do |attribute, attributes|
         attributes[attribute] = public_send(attribute) if public_send(attribute)
       end
     end
 
-    def create
-      saved_attributes = self.class.create(attributes)
+    def create(attributes)
+      saved_attributes = Request.new(self.class::BASE_PATH).post("", attributes)
 
       saved_attributes.keys.each_with_object(self) do |attribute, record|
         record.public_send("#{attribute}=", saved_attributes[attribute])
       end
-    end
 
-    def update
-      saved_attributes = self.class.update(id, attributes)
-
-      saved_attributes.keys.each_with_object(self) do |attribute, record|
-        record.public_send("#{attribute}=", saved_attributes[attribute])
-      end
+      self
     end
   end
 end

@@ -2,6 +2,7 @@
 
 module Docupilot
   class Template < RemoteRecord
+    BASE_PATH = :templates
     ATTRIBUTES = %i[
       auto_number
       dynamic_images
@@ -37,16 +38,10 @@ module Docupilot
       def upload_content(id, file)
         request("#{id}/content", :post, file: file)
       end
-
-      private
-
-      def base_path
-        :templates
-      end
     end
 
     def folder
-      Folder.new(@folder)
+      Folder.new(@folder) if @folder
     end
 
     def schema
@@ -55,7 +50,9 @@ module Docupilot
 
     private
 
-    def attributes
+    def all_attributes
+      return super unless folder
+
       attrs = super
       attrs[:folder] = folder.id.to_s
       attrs

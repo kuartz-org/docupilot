@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "net/http"
+
 module Docupilot
   class Request
     class Failure < StandardError; end
@@ -19,7 +21,7 @@ module Docupilot
 
     def post(path, attributes)
       @path = path
-      @response = Net::HTTP.post(uri, attributes, **headers, "Content-Type" => "application/json").body
+      @response = Net::HTTP.post(uri, attributes.to_json, **headers, "Content-Type" => "application/json").body
       handle_response
     end
 
