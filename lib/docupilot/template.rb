@@ -39,7 +39,7 @@ module Docupilot
     end
 
     def upload_content(file)
-      Request.new(BASE_PATH).post("#{id}/content", file: file)
+      Request.new(BASE_PATH).file_upload("#{id}/content", file)
     end
 
     private

@@ -35,6 +35,16 @@ module Docupilot
       handle_response
     end
 
+    def file_upload(path, file)
+      @path = path
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true
+      request = Net::HTTP::Post.new(uri, headers)
+      request.set_form([["file", File.open(file)]], "multipart/form-data")
+      @response = https.request(request).body
+      handle_response
+    end
+
     private
 
     def uri
