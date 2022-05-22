@@ -120,3 +120,23 @@ template.schema
 # {:name=>"end_date", :type=>"string"}
 # ]
 ```
+
+#### Merge a document
+
+[reference](https://help.docupilot.app/developers/templates-api#merge-a-document)
+
+```ruby
+attributes = {
+  project_name: "test 1",
+  client: { name: "michel", company: "acme" },
+  start_date: "10 juin 2022",
+  end_date: "12 juin 2022"
+}
+
+template = Docupilot::Template.find(42)
+template.merge_document(attributes)
+# => {
+#   :file_url=> "https://docupilot-documents.s3.amazonaws.com/temp/...",
+#   :file_name=>"Sample Project Proposal_2022-05-22 16_53_08.docx"
+# }
+```

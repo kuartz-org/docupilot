@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "open-uri"
+
 module Docupilot
   class Template < RemoteRecord
     BASE_PATH = :templates
@@ -41,6 +43,10 @@ module Docupilot
 
     def upload_content(file)
       Request.new(BASE_PATH).file_upload("#{id}/content", file)
+    end
+
+    def merge_document(attributes)
+      Request.new(BASE_PATH).post("#{id}/merge", attributes)
     end
 
     private
