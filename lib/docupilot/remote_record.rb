@@ -5,8 +5,8 @@ module Docupilot
     attr_accessor :id
 
     class << self
-      def all
-        Request.new(self::BASE_PATH).get("").map do |record_attributes|
+      def all(query_string_elements = {})
+        Request.new(self::BASE_PATH).get("", query_string_elements).map do |record_attributes|
           new record_attributes
         end
       end

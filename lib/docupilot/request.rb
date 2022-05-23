@@ -6,35 +6,35 @@ module Docupilot
   class Request
     class Failure < StandardError; end
 
-    attr_reader :attributes, :headers, :base_path, :path, :response
+    attr_reader :attributes, :headers, :base_path, :path, :response, :query_string_elements
 
     def initialize(base_path)
       @headers = { "apikey" => Docupilot.config.api_key }
       @base_path = base_path
     end
 
-    def get(path)
-      perform_request(path) { Net::HTTP.get(uri, headers) }
+    def get(path, query_string_elements = {})
+      perform_request(path, query_string_elements) { Net::HTTP.get(uri, headers) }
     end
 
-    def post(path, attributes)
-      perform_request(path) do
-        Net::HTTP.post(uri, attributes.to_json, **headers, "Content-Type" => "application/json").body
+    def post(path, body_elements, query_string_elements = {})
+      perform_request(path, query_string_elements) do
+        Net::HTTP.post(uri, body_elements.to_json, **headers, "Content-Type" => "application/json").body
       end
     end
 
-    def put(path, attributes)
-      perform_request(path) do
+    def put(path, body_elements, query_string_elements = {})
+      perform_request(path, query_string_elements) do
         https = Net::HTTP.new(uri.host, uri.port)
         https.use_ssl = true
         request = Net::HTTP::Put.new(uri, **headers, "Content-Type" => "application/json")
-        request.body = attributes.to_json
+        request.body = body_elements.to_json
         https.request(request).body
       end
     end
 
-    def upload(path, file)
-      perform_request(path) do
+    def upload(path, file, query_string_elements = {})
+      perform_request(path, query_string_elements) do
         https = Net::HTTP.new(uri.host, uri.port)
         https.use_ssl = true
         request = Net::HTTP::Post.new(uri, headers)
@@ -46,7 +46,9 @@ module Docupilot
     private
 
     def uri
-      @uri ||= URI [Docupilot.config.end_point, base_path, path].join("/").delete_suffix("/")
+      full_path = [Docupilot.config.end_point, base_path, path].join("/").delete_suffix("/")
+      full_path = "#{full_path}?#{URI.encode_www_form(@query_string_elements)}" if @query_string_elements.any?
+      URI full_path
     end
 
     def handle_response
@@ -57,7 +59,8 @@ module Docupilot
       raise Failure, parsed_response[:data]
     end
 
-    def perform_request(path)
+    def perform_request(path, query_string_elements)
+      @query_string_elements = query_string_elements
       @path = path
       @response = yield
       handle_response
