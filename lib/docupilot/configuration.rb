@@ -2,28 +2,8 @@
 
 module Docupilot
   module Configuration
-    def self.api_key
-      @api_key
-    end
-
-    def self.api_key=(api_key)
-      @api_key = api_key
-    end
-
-    def self.secret_key
-      @secret_key
-    end
-
-    def self.secret_key=(secret_key)
-      @secret_key = secret_key
-    end
-
-    def self.end_point
-      @end_point
-    end
-
-    def self.end_point=(end_point)
-      @end_point = end_point
+    class << self
+      attr_accessor :api_key, :secret_key, :end_point
     end
 
     DEFAULT = {
