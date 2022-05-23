@@ -42,7 +42,7 @@ module Docupilot
     end
 
     def upload_content(file)
-      Request.new(BASE_PATH).file_upload("#{id}/content", file)
+      Request.new(BASE_PATH).upload("#{id}/content", file)
     end
 
     def merge_document(attributes)

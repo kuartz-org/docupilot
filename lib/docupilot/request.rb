@@ -14,35 +14,33 @@ module Docupilot
     end
 
     def get(path)
-      @path = path
-      @response = Net::HTTP.get(uri, headers)
-      handle_response
+      perform_request(path) { Net::HTTP.get(uri, headers) }
     end
 
     def post(path, attributes)
-      @path = path
-      @response = Net::HTTP.post(uri, attributes.to_json, **headers, "Content-Type" => "application/json").body
-      handle_response
+      perform_request(path) do
+        Net::HTTP.post(uri, attributes.to_json, **headers, "Content-Type" => "application/json").body
+      end
     end
 
     def put(path, attributes)
-      @path = path
-      https = Net::HTTP.new(uri.host, uri.port)
-      https.use_ssl = true
-      request = Net::HTTP::Put.new(uri, **headers, "Content-Type" => "application/json")
-      request.body = attributes.to_json
-      @response = https.request(request).body
-      handle_response
+      perform_request(path) do
+        https = Net::HTTP.new(uri.host, uri.port)
+        https.use_ssl = true
+        request = Net::HTTP::Put.new(uri, **headers, "Content-Type" => "application/json")
+        request.body = attributes.to_json
+        https.request(request).body
+      end
     end
 
-    def file_upload(path, file)
-      @path = path
-      https = Net::HTTP.new(uri.host, uri.port)
-      https.use_ssl = true
-      request = Net::HTTP::Post.new(uri, headers)
-      request.set_form([["file", File.open(file)]], "multipart/form-data")
-      @response = https.request(request).body
-      handle_response
+    def upload(path, file)
+      perform_request(path) do
+        https = Net::HTTP.new(uri.host, uri.port)
+        https.use_ssl = true
+        request = Net::HTTP::Post.new(uri, headers)
+        request.set_form([["file", File.open(file)]], "multipart/form-data")
+        https.request(request).body
+      end
     end
 
     private
@@ -57,6 +55,12 @@ module Docupilot
       return parsed_response[:data] if parsed_response[:status] == "success"
 
       raise Failure, parsed_response[:data]
+    end
+
+    def perform_request(path)
+      @path = path
+      @response = yield
+      handle_response
     end
   end
 end
