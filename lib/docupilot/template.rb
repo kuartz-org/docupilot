@@ -54,9 +54,7 @@ module Docupilot
     def all_attributes
       return super unless folder
 
-      attrs = super
-      attrs[:folder] = folder.id.to_s
-      attrs
+      super.tap { |attributes| attributes[:folder] = folder.id.to_s }
     end
   end
 end
