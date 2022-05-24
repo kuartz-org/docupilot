@@ -40,6 +40,7 @@ Docupilot::Template.all(folder_id: 42)
 ```
 
 > **Warning**
+>
 > Without `folder_id`, this returns only templates from root.
 
 #### Get a template
