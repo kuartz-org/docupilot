@@ -8,11 +8,11 @@ module Docupilot
   class Error < StandardError; end
 
   def self.configure
-    yield Docupilot::Configuration
+    yield Configuration
   end
 
   def self.config
-    Docupilot::Configuration
+    Configuration
   end
 end
 

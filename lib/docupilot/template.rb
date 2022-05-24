@@ -33,7 +33,7 @@ module Docupilot
     attr_accessor(*ATTRIBUTES)
 
     def folder
-      return @folder if @folder.is_a? Docupilot::Folder
+      return @folder if @folder.is_a? Folder
 
       Folder.new(@folder) if @folder
     end
