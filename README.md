@@ -34,7 +34,13 @@ end
 ```ruby
 Docupilot::Template.all
 # => [#<Docupilot::Template:0x0000..>, #<Docupilot::Template:0x0000..>]
+
+# Optional `folder_id` attribute to get all templates from a specific folder.
+Docupilot::Template.all(folder_id: 42)
 ```
+
+> **Warning**
+> Without `folder_id`, this returns only templates from root.
 
 #### Get a template
 
