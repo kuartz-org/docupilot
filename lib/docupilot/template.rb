@@ -35,7 +35,7 @@ module Docupilot
     def folder
       return @folder if @folder.is_a? Folder
 
-      Folder.new(@folder) if @folder
+      @folder = Folder.new(@folder)
     end
 
     def schema
