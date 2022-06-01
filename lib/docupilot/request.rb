@@ -61,6 +61,7 @@ module Docupilot
     end
 
     def handle_response
+      logger.info("Response body:\n#{response}\n")
       parsed_response = JSON.parse(response, symbolize_names: true)
 
       return parsed_response[:data] if parsed_response[:status] == "success"

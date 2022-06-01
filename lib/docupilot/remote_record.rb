@@ -43,13 +43,7 @@ module Docupilot
     end
 
     def update(attributes)
-      saved_attributes = Request.new(self.class::BASE_PATH).put(id, attributes)
-
-      saved_attributes.keys.each_with_object(self) do |attribute, record|
-        record.public_send("#{attribute}=", saved_attributes[attribute])
-      end
-
-      self
+      tap { Request.new(self.class::BASE_PATH).put(id, attributes) }
     end
 
     private
