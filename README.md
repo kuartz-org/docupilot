@@ -6,7 +6,7 @@ Ruby wrapper for Docupilot API.
 
 ```ruby
 # Gemfile
-gem "docupilot"
+gem "docupilot", github: "kuartz-org/docupilot"
 ```
 
 ### Configuration
