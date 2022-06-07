@@ -2,9 +2,14 @@
 
 require "uri"
 require_relative "docupilot/version"
-require_relative "docupilot/configuration"
 
 module Docupilot
+  autoload :Configuration, "docupilot/configuration"
+  autoload :Request, "docupilot/request"
+  autoload :RemoteRecord, "docupilot/remote_record"
+  autoload :Template, "docupilot/template"
+  autoload :Folder, "docupilot/folder"
+
   class Error < StandardError; end
 
   def self.configure
@@ -15,8 +20,3 @@ module Docupilot
     Configuration
   end
 end
-
-require "docupilot/request"
-require "docupilot/remote_record"
-require "docupilot/template"
-require "docupilot/folder"
